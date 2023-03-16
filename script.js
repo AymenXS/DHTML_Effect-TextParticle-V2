@@ -19,11 +19,11 @@ window.addEventListener("mousemove", function (event) {
 });
 
 ctx.fillStyle = "white";
-ctx.font = "30px Verdana";
-ctx.fillText("A", 0, 30);
+ctx.font = "20px Verdana";
+ctx.fillText("ABC", 0, 30);
 ctx.strokeStyle = "white";
 ctx.strokeRect(0, 0, 100, 100);
-const textCoordinates = ctx.getImageData(0, 0, 100, 100);
+const textCoordinates = ctx.getImageData(0, 0, 200, 200);
 console.log(textCoordinates);
 
 class Particle {
@@ -76,7 +76,7 @@ function init() {
       if (textCoordinates.data[y * 4 * textCoordinates.width + x * 4 + 3] > 128) {
         let positionX = x + adjustX;
         let positionY = y + adjustY;
-        particleArray.push(new Particle(positionX * 10, positionY * 10));
+        particleArray.push(new Particle(positionX * 5, positionY * 5));
       }
     }
   }
@@ -96,14 +96,16 @@ animate();
 
 function connect() {
   let opacityValue = 1;
-  for (let a = 0; a < particleArray.length; a++) {
-    for (let b = a; b < particleArray.length; b++) {
+  for (let a = 0; a < particleArray.length; a += 2) {
+    for (let b = a; b < particleArray.length; b += 2) {
       let dx = particleArray[a].x - particleArray[b].x;
       let dy = particleArray[a].y - particleArray[b].y;
       let distance = Math.sqrt(dx * dx + dy * dy);
       opacityValue = 1 - distance / 20;
       ctx.strokeStyle = "rgba(255,255,255," + opacityValue + ")";
+
       if (distance < 20) {
+        //*Improvement: Add colors in relation to distance with multiple "if" statements; 
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(particleArray[a].x, particleArray[a].y);
